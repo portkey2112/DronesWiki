@@ -3,7 +3,7 @@ package com.drones.dronesspring.model;
 import javax.persistence.Id;
 
 public class DroneModel {
-    @Id
+    //@Id
     private Integer ID;
     private String name;
     private String users;

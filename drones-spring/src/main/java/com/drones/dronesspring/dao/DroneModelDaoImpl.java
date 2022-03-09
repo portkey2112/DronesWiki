@@ -40,7 +40,7 @@ public class DroneModelDaoImpl extends JdbcDaoSupport implements DroneModelDao {
 
     @Override
     public void insertDroneModel(DroneModel d_model) {
-        String sql = "INSERT INTO dronemodel " + "(ID, name, users, country) VALUES (?, ?)";
+        String sql = "INSERT INTO dronemodel " + "(ID, name, users, country) VALUES (?, ?, ?, ?)";
         getJdbcTemplate().update(sql, new Object[] { d_model.getID(), d_model.getName(), d_model.getUsers(), d_model.getCountry() });
 
     }
