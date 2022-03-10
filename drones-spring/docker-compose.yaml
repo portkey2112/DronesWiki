@@ -28,6 +28,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - DB_HOST=mysqldb
+      - DB_USERNAME=unbxd
+      - DB_PASSWORD=Unbxd@123
+      - DRONES_DB=drones_info
     depends_on:
       - mysqldb
     ports:
