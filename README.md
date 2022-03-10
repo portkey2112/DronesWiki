@@ -1,10 +1,12 @@
-# drone-spring-application
+# DronesWiki
 Sample Spring application for CRUD operations on drone DB
 
 Mysql is a container that should be running inorder to run the application.
 
 How to run:
-1. Start the container. 
-  docker-compose up  (In the drones-db directory)
-2. Run the application. (Run main function.)
-3. Access http://localhost:8080/droneModels to see the rows of the table.
+1. git clone https://github.com/portkey2112/DronesWiki.git
+2. git checkout devops
+3. cd drones-spring
+4. docker-compose up 
+
+Running the docker compose file will create the image for the app and run the container. 
