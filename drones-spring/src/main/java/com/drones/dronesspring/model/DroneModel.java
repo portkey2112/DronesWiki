@@ -1,5 +1,6 @@
 package com.drones.dronesspring.model;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 
 public class DroneModel {
