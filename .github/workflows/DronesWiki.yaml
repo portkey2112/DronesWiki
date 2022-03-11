@@ -17,26 +17,16 @@ jobs:
       - name: Set up JDK 11
         id: setup-java
         uses: actions/setup-java@v1
-        run: "Running JDK setup"
         with:
             java-version: 11
             distribution: 'temurin'
             cache: maven
-        - run: echo "Setup JDK Workflow failed"
-          if: steps.check.outputs.status == 'failure'
-        - run: echo "Setup Workflow was successful"
-          if: steps.check.outputs.status == 'success'
 
       - name: Build with Maven
         id: build-application
-        run: echo "Running Maven Build"
         run: |
           cd $GITHUB_WORKSPACE
           ./mvnw clean package -DskipTests -Dassembly.skipAssembly=true
-      - run: echo "Maven Build Workflow failed"
-        if: steps.check.outputs.status == 'failure'
-      - run: echo "Maven Build was successful"
-        if: steps.check.outputs.status == 'success'
           
       - name: Run Docker container
         id: build-container
