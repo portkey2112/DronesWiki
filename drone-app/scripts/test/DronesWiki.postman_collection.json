@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "c15e5f80-1a27-400f-8bf7-23e26e9a46af",
+		"name": "DronesWiki",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "insertDroneModel",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Insert Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 110,\n    \"name\": \"dfdsfds\",\n    \"users\": \"dsfsdfds\",\n    \"country\": \"dsfd\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/insertDroneModel",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"insertDroneModel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getDroneModels",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"GetAll Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/droneModels",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"droneModels"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteDroneModel",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delete Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/deleteDroneModel/110",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deleteDroneModel",
+						"110"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
