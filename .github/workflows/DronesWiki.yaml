@@ -28,6 +28,13 @@ jobs:
           cd $GITHUB_WORKSPACE
           ./mvnw clean package -DskipTests -Dassembly.skipAssembly=true
           
-      - name: Run Docker container
+      - name: Run Docker image
         id: build-container
-        run: docker-compose up
+        run: docker-compose up -d
+
+      - name: Run Postman tests
+        id: postman-test
+        run: |
+          sleep 40
+          cd $GITHUB_WORKSPACE
+          newman run ./scripts/test/DronesWiki.postman_collection.json
