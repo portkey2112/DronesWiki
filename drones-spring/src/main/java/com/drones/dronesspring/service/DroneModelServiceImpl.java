@@ -23,4 +23,7 @@ public class DroneModelServiceImpl implements DroneModelService{
         droneModelDao.insertDroneModel(d_model);
     }
 
+    @Override
+    public void deleteDroneModel(Integer id) { droneModelDao.deleteDroneModel(id);}
+
 }

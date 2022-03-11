@@ -45,4 +45,12 @@ public class DroneModelDaoImpl extends JdbcDaoSupport implements DroneModelDao {
 
     }
 
+    @Override
+    public void deleteDroneModel(Integer ID) {
+        String sql = "DELETE FROM dronemodel WHERE ID = ?";
+        getJdbcTemplate().update(sql, ID);
+    }
+
+
+
 }
