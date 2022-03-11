@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-#    if: github.repository == 'portkey2112/DronesWiki'
+    if: github.repository == 'portkey2112/DronesWiki'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
