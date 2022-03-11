@@ -21,6 +21,18 @@ services:
     networks:
       - app-tier
 
+  setup:
+    image: 'docker.io/bitnami/mysql:8.0'
+    depends_on:
+      - mysqldb
+    networks:
+      - app-tier
+    volumes:
+      - ./scripts/wait-for-it.sh:/home/worker/scripts/wait-for-it.sh
+      - ./scripts/setup.sql:/home/worker/scripts/setup.sql
+    command: >
+      bash -c '/home/worker/scripts/wait-for-it.sh -h mysqldb -p 3306 -t 30; mysql -hmysqldb -uunbxd -pUnbxd@123 < /home/worker/scripts/setup.sql;'
+
 
   myapp:
     image: 'drone-details:v1'
@@ -40,4 +52,4 @@ services:
     networks:
       - app-tier
     command: >
-      bash -c './wait-for-it.sh -h mysqldb -p 3306 -t 20; java -jar drones-spring-0.0.1-SNAPSHOT.jar'
+      bash -c './wait-for-it.sh -h mysqldb -p 3306 -t 30; java -jar drones-spring-0.0.1-SNAPSHOT.jar'
