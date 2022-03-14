@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: init-scripts-cfg-map
+data:
+  setup.sql: |
+  {{ .Files.Get "scripts/setup.sql" | indent 4 }}
+  wait-for-it.sh: |
+  {{ .Files.Get "scripts/wait-for-it.sh" | indent 4 }}
