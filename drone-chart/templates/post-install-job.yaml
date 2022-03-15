@@ -10,7 +10,7 @@ metadata:
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
-    "helm.sh/hook": post-install
+    "helm.sh/hook": post-install, post-upgrade
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": before-hook-creation
 spec:
@@ -33,24 +33,28 @@ spec:
 #            type: Directory
           configMap:
             name: init-scripts-cfg-map
+            defaultMode: 0777
             items:
               - key: setup.sql
                 path: setup.sql
               - key: wait-for-it.sh
                 path: wait-for-it.sh
       initContainers:
-        - name: init-myservice
-          image: busybox:1.28
-          volumeMounts:
-            - mountPath: /home/worker/scripts/
-              name: init-scripts
-              readOnly: true
-          command: [ 'sh', '-c', "/home/worker/scripts/wait-for-it.sh -h drone-mysql.default.svc.cluster.local -p 3306 -t 30" ]
+        - name: mysql-listener
+          image: alpine
+          imagePullPolicy: IfNotPresent
+          command: [ "sh", "-c", "for i in $(seq 1 200); do nc -zv -w5  drone-mysql.default.svc.cluster.local 3306 && exit 0 || sleep 1; done; exit 1"]
+#          image: busybox:1.28
+#          imagePullPolicy: IfNotPresent
+#          volumeMounts:
+#            - mountPath: /home/worker/scripts/
+#              name: init-scripts
+#          command: [ 'sh', '-c', "/home/worker/scripts/wait-for-it.sh -h drone-mysql.default.svc.cluster.local -p 3306 -t 300" ]
       containers:
         - name: db-setup
           image: 'docker.io/bitnami/mysql:8.0'
-          command: ["sh", "-c", "/home/worker/scripts/wait-for-it.sh -h drone-mysql.default.svc.cluster.local -p 3306 -t 30 && mysql -hdrone-mysql.default.svc.cluster.local -uunbxd -pUnbxd@123 < /home/worker/scripts/setup.sql;"]
+          imagePullPolicy: IfNotPresent
+          command: ["sh", "-c", "mysql -hdrone-mysql.default.svc.cluster.local -uunbxd -pUnbxd@123 < /home/worker/scripts/setup.sql"]
           volumeMounts:
             - mountPath: /home/worker/scripts
               name: init-scripts
-              readOnly: true

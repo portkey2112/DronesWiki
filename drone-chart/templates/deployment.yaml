@@ -35,18 +35,18 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
           env:
-          - name: DB_HOST
-            #value: {{ .Values.mysql.fullnameOverride }}.default.svc.cluster.local
-            value: drone-mysql.default.svc.cluster.local
-          - name: DB_USERNAME
-            value: unbxd
-          - name: DB_PASSWORD
-            value: Unbxd@123
-          - name: DRONES_DB
-            value: drones_info
+            - name: DB_HOST
+              #value: {{ .Values.mysql.fullnameOverride }}.default.svc.cluster.local
+              value: "drone-mysql.default.svc.cluster.local"
+            - name: DB_USERNAME
+              value: "unbxd"
+            - name: DB_PASSWORD
+              value: "Unbxd@123"
+            - name: DRONES_DB
+              value: "drones_info"
           livenessProbe:
             httpGet:
               path: /
