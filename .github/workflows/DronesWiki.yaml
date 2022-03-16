@@ -11,8 +11,7 @@ env:
   HELM_DIR: drone-chart
   HELM_RELEASE: drone-helm-app
   CONTAINER_PORT: 8080
-
-
+  APP_IMAGE: drone_details:v1
 
 jobs:
   build:
@@ -39,15 +38,18 @@ jobs:
 #        run: docker-compose up -d
 
       - name: Create k8s Kind Cluster
-        uses: helm/kind-action@v1.2.0
-        run: |
-          kind create cluster
+        uses: helm/kind-action@v1.0.0
 
-      - name: Build and load image
+      - name: Configuring and testing the Kind Installation
+        run: |
+          kubectl cluster-info --context kind-kind
+          kind get nodes 
+
+      - name: Build and load image on cluster
         id: build-load-docker-image
         run: |
-          docker build -t drone-details:v1 .
-          kind load docker-image drone-details:v1
+          docker build -t $APP_IMAGE .
+          kind load docker-image $APP_IMAGE
 
       - name: Set up Helm
         id: setup-helm
