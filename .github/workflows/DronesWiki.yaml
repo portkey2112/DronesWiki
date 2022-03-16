@@ -7,6 +7,12 @@ on:
   pull_request:
     branches:
       - devops
+env:
+  HELM_DIR: drone-chart
+  HELM_RELEASE: drone-helm-app
+  CONTAINER_PORT: 8080
+
+
 
 jobs:
   build:
@@ -48,17 +54,14 @@ jobs:
           version: v3.4.0
 
       - name: Deploy
-        uses: 'deliverybot/helm@master'
-        with:
-          token: '${{ github.token }}'
-          chart: drone-chart
-          release: drone-helm-app
-          value-files: ./drone-helm-app/values.yaml
+        id: deploy-using-helm
+        run: |
+          helm install -f SHELM_DIR/values.yaml $HELM_RELEASE $HELM_DIR
 
       - name: Port-forward
         id: port-forward
         run: |
-          export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=drone-chart,app.kubernetes.io/instance=drone-helm-app" -o jsonpath="{.items[0].metadata.name}")
+          export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=$HELM_DIR,app.kubernetes.io/instance=HELM_RELEASE" -o jsonpath="{.items[0].metadata.name}")
           export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
           kubectl port-forward $POD_NAME 8080:$CONTAINER_PORT
 
