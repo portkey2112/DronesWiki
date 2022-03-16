@@ -40,6 +40,8 @@ jobs:
 
       - name: Create k8s Kind Cluster
         uses: helm/kind-action@v1.2.0
+        run: |
+          kind create cluster
 
       - name: Build and load image
         id: build-load-docker-image
