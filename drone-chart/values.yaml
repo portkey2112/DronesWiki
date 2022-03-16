@@ -84,14 +84,7 @@ affinity: {}
 mysql:
   fullnameOverride: drone-mysql
   auth:
-    ## MySQL root password
-    ## ref: https://github.com/bitnami/bitnami-docker-mysql#setting-the-root-password-on-first-run
-    ##
     rootPassword: Unbxd@123
-    ## MySQL custom user and database
-    ## ref: https://github.com/bitnami/bitnami-docker-mysql/blob/master/README.md#creating-a-database-on-first-run
-    ## ref: https://github.com/bitnami/bitnami-docker-mysql/blob/master/README.md#creating-a-database-user-on-first-run
-    ##
     database: drones_info
     username: unbxd
     password: Unbxd@123

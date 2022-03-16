@@ -39,14 +39,13 @@ spec:
               protocol: TCP
           env:
             - name: DB_HOST
-              #value: {{ .Values.mysql.fullnameOverride }}.default.svc.cluster.local
-              value: "drone-mysql.default.svc.cluster.local"
+              value: {{ .Values.mysql.fullnameOverride }}.{{ .Release.Namespace }}.svc.cluster.local
             - name: DB_USERNAME
-              value: "unbxd"
+              value: {{ .Values.mysql.auth.username }}
             - name: DB_PASSWORD
-              value: "Unbxd@123"
+              value: {{ .Values.mysql.auth.password }}
             - name: DRONES_DB
-              value: "drones_info"
+              value: {{ .Values.mysql.auth.database }}
           livenessProbe:
             httpGet:
               path: /
