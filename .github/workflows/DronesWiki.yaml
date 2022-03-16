@@ -28,9 +28,39 @@ jobs:
           cd $GITHUB_WORKSPACE
           ./mvnw clean package -DskipTests -Dassembly.skipAssembly=true
           
-      - name: Run Docker image
-        id: build-container
-        run: docker-compose up -d
+#      - name: Run Docker image
+#        id: build-container
+#        run: docker-compose up -d
+
+      - name: Create k8s Kind Cluster
+        uses: helm/kind-action@v1.2.0
+
+      - name: Build and load image
+        id: build-load-docker-image
+        run: |
+          docker build -t drone-details:v1 .
+          kind load docker-image drone-details:v1
+
+      - name: Set up Helm
+        id: setup-helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.4.0
+
+      - name: Deploy
+        uses: 'deliverybot/helm@master'
+        with:
+          token: '${{ github.token }}'
+          chart: drone-chart
+          release: drone-helm-app
+          value-files: ./drone-helm-app/values.yaml
+
+      - name: Port-forward
+        id: port-forward
+        run: |
+          export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=drone-chart,app.kubernetes.io/instance=drone-helm-app" -o jsonpath="{.items[0].metadata.name}")
+          export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+          kubectl port-forward $POD_NAME 8080:$CONTAINER_PORT
 
       - name: Run Postman tests
         id: postman-test
