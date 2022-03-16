@@ -63,7 +63,7 @@ jobs:
       - name: Deploy
         id: deploy-using-helm
         run: |
-          helm install -f $HELM_DIR/values.yaml $HELM_RELEASE $HELM_DIR --set startupapicheck.timeout=10m
+          helm install -f $HELM_DIR/values.yaml $HELM_RELEASE $HELM_DIR --set startupapicheck.timeout=10m --timeout 10m
 
       - name: Port-forward
         id: port-forward
