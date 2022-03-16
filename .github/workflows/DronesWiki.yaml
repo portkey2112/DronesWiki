@@ -35,6 +35,6 @@ jobs:
       - name: Run Postman tests
         id: postman-test
         run: |
-          sleep 40
+          sleep 60
           cd $GITHUB_WORKSPACE
           newman run ./scripts/test/DronesWiki.postman_collection.json
