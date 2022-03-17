@@ -11,7 +11,7 @@ env:
   HELM_DIR: helm
   HELM_RELEASE: drone-helm-app
   CONTAINER_PORT: 8080
-  APP_IMAGE: drone_details:v1
+  APP_IMAGE: drone-details:v1
 
 jobs:
   build:
@@ -19,7 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
 
