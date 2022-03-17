@@ -1,0 +1,28 @@
+apiVersion: skaffold/v2beta10
+kind: Config
+metadata:
+  name: drone-app
+build:
+  local:
+    concurrency: 0
+    push: false
+    useDockerCLI: true
+  tagPolicy:
+    envTemplate:
+      template: "{{.TAG}}"
+  artifacts:
+    - image: drone-details
+      docker:
+        dockerfile: Dockerfile
+
+deploy:
+  helm:
+    releases:
+    - name: drone-helm-app
+      chartPath: helm
+      setValues:
+        service.type: ClusterIP
+      artifactOverrides:
+        image: drone-details
+      valuesFiles:
+        - helm/values.yaml

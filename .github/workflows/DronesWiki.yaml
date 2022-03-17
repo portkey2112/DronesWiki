@@ -17,6 +17,8 @@ jobs:
   build:
     if: github.repository == 'portkey2112/DronesWiki'
     runs-on: ubuntu-latest
+    env:
+      TAG: v1
     steps:
       - uses: actions/checkout@v2
 
@@ -42,23 +44,24 @@ jobs:
 #        uses: engineerd/setup-kind@v0.5.0
 #        with:
 #          version: "v0.7.0"
+
       - name: Create kind cluster
         id: setup-kind
         uses: helm/kind-action@v1.0.0
         with:
           config: build/cluster.yaml
 
-      - name: Configuring and testing the Kind Installation
-        run: |
-          kubectl cluster-info --context kind-kind
-          kind get kubeconfig --internal >$HOME/.kube/config
-          kind get nodes 
+#      - name: Configuring and testing the Kind Installation
+#        run: |
+#          kubectl cluster-info --context kind-kind
+#          kind get kubeconfig --internal >$HOME/.kube/config
+#          kind get nodes
 
-      - name: Build and load image on cluster
-        id: build-load-docker-image
-        run: |
-          docker build -t $APP_IMAGE .
-          kind load docker-image $APP_IMAGE
+#      - name: Build and load image on cluster
+#        id: build-load-docker-image
+#        run: |
+#          docker build -t $APP_IMAGE .
+#          kind load docker-image $APP_IMAGE
 
       - name: Set up Helm
         id: setup-helm
@@ -66,10 +69,26 @@ jobs:
         with:
           version: v3.4.0
 
-      - name: Deploy
-        id: deploy-using-helm
-        run: |
-          helm install -f $HELM_DIR/values.yaml $HELM_RELEASE $HELM_DIR --set startupapicheck.timeout=10m --timeout 10m
+#      - name: Deploy
+#        id: deploy-using-helm
+#        run: |
+#          helm install -f $HELM_DIR/values.yaml $HELM_RELEASE $HELM_DIR --set startupapicheck.timeout=10m --timeout 10m
+
+      - name: Run Skaffold pipeline
+        id: run-skaffold-pipeline
+        uses: hiberbee/github-action-skaffold@1.4.0
+#        env:
+#          TAG: ${{ steps.extract_tag.outputs.BUILD_TAG }}
+        with:
+          command: run
+          skaffold-version: 1.17.2
+
+#      - name: print logs
+#        run: |
+#          kubectl get po
+#          kubectl logs -l app=configstore-albus
+#          kubectl logs -l job-name=drone-helm-app
+#        if: always()
 
       - name: Setup tmate session
         if: ${{ failure() }}

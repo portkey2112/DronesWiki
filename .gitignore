@@ -30,3 +30,6 @@ target/
 
 ### VS Code ###
 .vscode/
+
+### Helm files ###
+./helm/Chart.lock
