@@ -5,5 +5,3 @@ metadata:
 data:
   setup.sql: |
 {{ .Files.Get "setup.sql" | indent 4 }}
-  wait-for-it.sh: |
-{{ .Files.Get "wait-for-it.sh" | indent 4 }}

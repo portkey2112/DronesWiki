@@ -31,8 +31,6 @@ spec:
             items:
               - key: setup.sql
                 path: setup.sql
-              - key: wait-for-it.sh
-                path: wait-for-it.sh
       initContainers:
         - name: mysql-listener
           image: alpine
