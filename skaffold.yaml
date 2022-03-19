@@ -8,6 +8,7 @@ build:
     push: false
     useDockerCLI: true
   tagPolicy:
+#    sha256: {}
     envTemplate:
       template: "{{.TAG}}"
   artifacts:
@@ -26,3 +27,8 @@ deploy:
         image: drone-details
       valuesFiles:
         - helm/values.yaml
+portForward:
+  - resourceType: deployment
+    resourceName: drone-helm-app
+    port: 8080
+    localPort: 8080

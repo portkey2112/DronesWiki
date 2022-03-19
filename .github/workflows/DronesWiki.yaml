@@ -63,6 +63,13 @@ jobs:
 #          docker build -t $APP_IMAGE .
 #          kind load docker-image $APP_IMAGE
 
+      - name: Setup Ingress
+        id: setup-ingress
+        run: |
+          sudo sysctl net/netfilter/nf_conntrack_max=131072
+          kubectl version
+          kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/ingress-nginx-3.15.2/deploy/static/provider/kind/deploy.yaml
+
       - name: Set up Helm
         id: setup-helm
         uses: azure/setup-helm@v1
@@ -77,8 +84,6 @@ jobs:
       - name: Run Skaffold pipeline
         id: run-skaffold-pipeline
         uses: hiberbee/github-action-skaffold@1.4.0
-#        env:
-#          TAG: ${{ steps.extract_tag.outputs.BUILD_TAG }}
         with:
           command: run
           skaffold-version: 1.17.2
