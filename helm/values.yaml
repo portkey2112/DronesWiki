@@ -8,7 +8,7 @@ image:
   repository: drone-details
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v1"
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -41,7 +41,7 @@ service:
   port: 80
 
 #ingress:
-#  enabled: true
+#  enabled: false
 #  className: ""
 #  annotations: {}
 #    kubernetes.io/ingress.class: nginx
@@ -56,17 +56,18 @@ service:
   #    hosts:
   #      - chart-example.local
 
+#Follow https://kind.sigs.k8s.io/docs/user/ingress/#using-ingress for kind cluster creation
 ingress:
   enabled: true
-#    className: ""
+#  className: nginx-dronedetails
   annotations:
     kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: localhost
+    - host: dronedetails.com
       paths:
         - path: /
-          pathType: ImplementationSpecific
+          pathType: Prefix
 #    tls: []
 #    - secretName: chart-example-tls
 #      hosts:

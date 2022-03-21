@@ -19,6 +19,7 @@ metadata:
   labels:
     {{- include "helm.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
+#  namespace: ingress-nginx
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -27,6 +28,11 @@ spec:
   ingressClassName: {{ .Values.ingress.className }}
   {{- end }}
   {{- if .Values.ingress.tls }}
+  defaultBackend:
+    service:
+      name: drone-helm-app
+      port:
+        number: 80
   tls:
     {{- range .Values.ingress.tls }}
     - hosts:
@@ -47,11 +53,13 @@ spec:
             pathType: {{ .pathType }}
             {{- end }}
             backend:
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+#              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: {{ $fullName }}
+#                name: {{ $fullName }}
+                name: drone-helm-app
                 port:
-                  number: {{ $svcPort }}
+                  number: 80
+#                  number: {{ $svcPort }}
               {{- else }}
               serviceName: {{ $fullName }}
               servicePort: {{ $svcPort }}

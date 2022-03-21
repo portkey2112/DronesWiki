@@ -7,10 +7,10 @@ build:
     concurrency: 0
     push: false
     useDockerCLI: true
-  tagPolicy:
+#  tagPolicy:
 #    sha256: {}
-    envTemplate:
-      template: "{{.TAG}}"
+#    envTemplate:
+#      template: "{{.TAG}}"
   artifacts:
     - image: drone-details
       docker:
@@ -24,7 +24,9 @@ deploy:
       setValues:
         service.type: ClusterIP
       artifactOverrides:
-        image: drone-details
+        imageKey: drone-details
+      imageStrategy:
+        helm: {}
       valuesFiles:
         - helm/values.yaml
 portForward:
