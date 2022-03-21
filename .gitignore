@@ -32,4 +32,4 @@ target/
 .vscode/
 
 ### Helm files ###
-./helm/Chart.lock
+helm/Chart.lock

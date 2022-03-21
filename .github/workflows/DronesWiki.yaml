@@ -81,30 +81,35 @@ jobs:
 #        run: |
 #          helm install -f $HELM_DIR/values.yaml $HELM_RELEASE $HELM_DIR --set startupapicheck.timeout=10m --timeout 10m
 
+      - name: Add Ingress hosts
+        id: ingress-hosts
+        run: |
+          echo "127.0.0.1 dronedetails.com" | sudo tee -a /etc/hosts
+
       - name: Run Skaffold pipeline
         id: run-skaffold-pipeline
         uses: hiberbee/github-action-skaffold@1.4.0
         with:
-          command: run
+          command: debug --port-forward
           skaffold-version: 1.17.2
 
-#      - name: print logs
-#        run: |
-#          kubectl get po
-#          kubectl logs -l app=configstore-albus
-#          kubectl logs -l job-name=drone-helm-app
-#        if: always()
+      - name: print logs
+        run: |
+          kubectl get po
+          kubectl logs -l job-name=$HELM_RELEASE
+        if: always()
 
       - name: Setup tmate session
         if: ${{ failure() }}
         uses: mxschmitt/action-tmate@v3
 
-      - name: Port-forward
-        id: port-forward
-        run: |
-          export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=$HELM_DIR,app.kubernetes.io/instance=HELM_RELEASE" -o jsonpath="{.items[0].metadata.name}")
-          export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
-          kubectl port-forward $POD_NAME 8080:$CONTAINER_PORT
+#      This section is not required. C/O scaffold
+#      - name: Port-forward
+#        id: port-forward
+#        run: |
+#          export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=$HELM_DIR,app.kubernetes.io/instance=HELM_RELEASE" -o jsonpath="{.items[0].metadata.name}")
+#          export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+#          kubectl port-forward $POD_NAME 8080:$CONTAINER_PORT
 
       - name: Run Postman tests
         id: postman-test
