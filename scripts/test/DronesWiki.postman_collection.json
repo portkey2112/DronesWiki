@@ -33,9 +33,9 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/insertDroneModel",
+					"raw": "dronedetails.com:8080/insertDroneModel",
 					"host": [
-						"localhost"
+						"dronedetails.com"
 					],
 					"port": "8080",
 					"path": [
@@ -64,10 +64,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/droneModels",
+					"raw": "http://dronedetails.com:8080/droneModels",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"dronedetails.com"
 					],
 					"port": "8080",
 					"path": [
@@ -97,10 +97,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/deleteDroneModel/110",
+					"raw": "http://dronedetails.com:8080/deleteDroneModel/110",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"dronedetails.com"
 					],
 					"port": "8080",
 					"path": [
