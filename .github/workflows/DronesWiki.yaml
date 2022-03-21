@@ -90,7 +90,7 @@ jobs:
         id: run-skaffold-pipeline
         uses: hiberbee/github-action-skaffold@1.4.0
         with:
-          command: debug --port-forward
+          command: run --port-forward
           skaffold-version: 1.17.2
 
       - name: print logs
