@@ -86,6 +86,14 @@ jobs:
         run: |
           echo "127.0.0.1 dronedetails.com" | sudo tee -a /etc/hosts
 
+      - name: Wait for ingress
+        id: wait-for-ingress
+        run: |
+          kubectl wait --namespace ingress-nginx \
+                      --for=condition=ready pod \
+                      --selector=app.kubernetes.io/component=controller \
+                      --timeout=90s
+
       - name: Run Skaffold pipeline
         id: run-skaffold-pipeline
         uses: hiberbee/github-action-skaffold@1.4.0
