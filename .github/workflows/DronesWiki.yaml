@@ -12,6 +12,7 @@ env:
   HELM_RELEASE: drone-helm-app
   CONTAINER_PORT: 8080
   APP_IMAGE: drone-details:v1
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
 jobs:
   build:
