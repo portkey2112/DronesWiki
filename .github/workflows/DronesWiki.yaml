@@ -1,0 +1,94 @@
+name: DronesWiki
+
+on:
+  push:
+    branches:
+      - devops
+  pull_request:
+    branches:
+      - devops
+env:
+  HELM_DIR: helm
+  HELM_RELEASE: drone-helm-app
+  CONTAINER_PORT: 8080
+  APP_IMAGE: drone-details:v1
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+jobs:
+  build:
+    if: github.repository == 'portkey2112/DronesWiki'
+    runs-on: ubuntu-latest
+    env:
+      TAG: v1
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        id: setup-java
+        uses: actions/setup-java@v1
+        with:
+            java-version: 11
+            distribution: 'temurin'
+            cache: maven
+
+      - name: Build with Maven
+        id: build-application
+        run: |
+          cd $GITHUB_WORKSPACE
+          ./mvnw clean package -DskipTests -Dassembly.skipAssembly=true
+
+      - name: Create kind cluster
+        id: setup-kind
+        uses: helm/kind-action@v1.0.0
+        with:
+          config: build/cluster.yaml
+
+      - name: Setup Ingress
+        id: setup-ingress
+        run: |
+          sudo sysctl net/netfilter/nf_conntrack_max=131072
+          kubectl version
+          kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/ingress-nginx-3.15.2/deploy/static/provider/kind/deploy.yaml
+
+      - name: Set up Helm
+        id: setup-helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.4.0
+
+      - name: Add Ingress hosts
+        id: ingress-hosts
+        run: |
+          echo "127.0.0.1 dronedetails.com" | sudo tee -a /etc/hosts
+
+      - name: Wait for ingress
+        id: wait-for-ingress
+        run: |
+          kubectl wait --namespace ingress-nginx \
+                      --for=condition=ready pod \
+                      --selector=app.kubernetes.io/component=controller \
+                      --timeout=150s
+
+      - name: Run Skaffold pipeline
+        id: run-skaffold-pipeline
+        uses: hiberbee/github-action-skaffold@1.4.0
+        with:
+          command: run
+          skaffold-version: 1.17.2
+
+      - name: print logs
+        run: |
+          kubectl get po
+          kubectl logs -l job-name=$HELM_RELEASE
+        if: always()
+
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
+
+      - name: Run Postman tests
+        id: postman-test
+        run: |
+          sleep 60
+          cd $GITHUB_WORKSPACE
+          newman run ./scripts/test/DronesWiki.postman_collection.json
