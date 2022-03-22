@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "bac83e8f-9996-4567-9712-5600413f8a63",
-		"name": "drones_info_CRUD_using_hostname",
+		"name": "DronesWiki",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -24,14 +24,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://dronedetails.com/drones/get",
+					"raw": "http://dronedetails.com/drones/",
 					"protocol": "http",
 					"host": [
 						"dronedetails",
 						"com"
 					],
 					"path": [
-						"droneModels"
+						"drones",
+						""
 					]
 				}
 			},
@@ -71,7 +72,8 @@
 						"com"
 					],
 					"path": [
-						"insertDroneModel"
+						"drones",
+						"addDrone"
 					]
 				}
 			},
@@ -96,14 +98,14 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://dronedetails.com/drones/delete/100",
+					"raw": "http://dronedetails.com/drones/100",
 					"protocol": "http",
 					"host": [
 						"dronedetails",
 						"com"
 					],
 					"path": [
-						"deleteDroneModel",
+						"drones",
 						"100"
 					]
 				}

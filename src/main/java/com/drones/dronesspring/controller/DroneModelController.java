@@ -14,7 +14,7 @@ public class DroneModelController {
     @Autowired
     DroneModelService d_model_service;
 
-    @RequestMapping(value = "/drones/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/drones", method = RequestMethod.GET)
     public List<DroneModel> getDroneModels() {
         return d_model_service.getAllDroneModels();
     }
@@ -29,7 +29,7 @@ public class DroneModelController {
     public void deleteDrone(@RequestBody Integer ID) { d_model_service.deleteDroneModel(new Integer(ID));}*/
 
 
-    @RequestMapping(value = "/drones/delete/{ID}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/drones/{ID}", method = RequestMethod.DELETE)
     public void deleteDrone(@PathVariable Integer ID) { d_model_service.deleteDroneModel(ID);}
 
 
