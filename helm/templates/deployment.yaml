@@ -48,11 +48,11 @@ spec:
               value: {{ .Values.mysql.auth.database }}
           livenessProbe:
             httpGet:
-              path: /droneModels
+              path: /drones/get
               port: http
           readinessProbe:
             httpGet:
-              path: /droneModels
+              path: /drones/get
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

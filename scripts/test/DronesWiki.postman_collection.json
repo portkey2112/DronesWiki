@@ -24,7 +24,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://dronedetails.com/droneModels",
+					"raw": "http://dronedetails.com/drones/get",
 					"protocol": "http",
 					"host": [
 						"dronedetails",
@@ -65,7 +65,7 @@
 					}
 				},
 				"url": {
-					"raw": "dronedetails.com/insertDroneModel",
+					"raw": "dronedetails.com/drones/addDrone",
 					"host": [
 						"dronedetails",
 						"com"
@@ -96,7 +96,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://dronedetails.com/deleteDroneModel/100",
+					"raw": "http://dronedetails.com/drones/delete/100",
 					"protocol": "http",
 					"host": [
 						"dronedetails",
