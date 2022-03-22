@@ -86,12 +86,6 @@ jobs:
         if: ${{ failure() }}
         uses: mxschmitt/action-tmate@v3
 
-      - name: wait-for-deployment
-        id: wait-for-ingress
-        run: |
-          kubectl wait --for=condition=ready pod \
-                        --selector=app.kubernetes.io/component=controller \
-                        --timeout=150s
       - name: Run Postman tests
         id: postman-test
         run: |
